@@ -1,4 +1,6 @@
+import uuid
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 """
@@ -11,16 +13,12 @@ Necesitaré:
 
 Como estas cosas son comunes para ambos, voy a hacer un solo modelo con una distinción de rol
 """
-class User(models.Model):
+class User(AbstractUser):
     id = models.UUIDField(
         primary_key=True, 
-        default=models.UUIDField, 
+        default=uuid.uuid4, 
         editable=False
         )
-    name = models.CharField(max_length=100)
-    surname = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=100)
     ROLE_CHOICES = [
         ('student', 'Alumno'),
         ('teacher', 'Profesor'),
@@ -28,7 +26,7 @@ class User(models.Model):
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
 
     def __str__(self):
-        return f"{self.name} {self.surname} ({self.role})"
+        return f"{self.first_name} {self.last_name} ({self.role})"
 
 """
 Para el modelo de tarea, necesito:

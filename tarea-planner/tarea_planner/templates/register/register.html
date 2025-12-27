@@ -1,1 +1,23 @@
 <h1>Registro</h1>
+
+<form id="register-form" method="POST" action="/register/">
+    {% csrf_token %}
+    <input type="text" name="first_name" placeholder="Nombre de usuario" required>
+    <input type="text" name="last_name" placeholder="Apellido" required>
+    <input type="email" name="email" placeholder="Correo electrónico" required>
+    <input type="password" name="password" placeholder="Contraseña" required>
+    <select name="role" required>
+        <option value="" disabled selected>Selecciona un rol</option>
+        <option value="student">Alumno</option>
+        <option value="teacher">Profesor</option>
+    </select>
+    <button type="submit">Registrarse</button>
+</form>
+
+{% if messages %}
+<ul>
+    {% for message in messages %}
+        <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}

@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "tarea_planner"
 ]
 
+AUTH_USER_MODEL = 'tarea_planner.User'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
