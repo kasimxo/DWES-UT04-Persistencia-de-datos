@@ -36,3 +36,13 @@ class RegisterView(View):
         except Exception as e:
             messages.error(request, f"Error al registrar el usuario: {str(e)}")
             return render(request, "register/register.html")
+        
+class LoginView(View):
+
+    def get(self, request):
+        return render(request, "login/login.html")
+
+class HomeView(View):
+
+    def get(self, request):
+        return render(request, "home/home.html")
