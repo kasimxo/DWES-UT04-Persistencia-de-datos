@@ -25,13 +25,14 @@ class RegisterView(View):
         try:
             user = User.objects.create_user(
                 email=email,
-                password=make_password(password),
+                password=password,
                 first_name=first_name,
                 last_name=last_name,
                 role=role
             )
             user.save()
             messages.success(request, "Usuario registrado con éxito.")
+            print(f"Usuario {email} {password} registrado con éxito.")
             return redirect("login")
         except Exception as e:
             messages.error(request, f"Error al registrar el usuario: {str(e)}")
