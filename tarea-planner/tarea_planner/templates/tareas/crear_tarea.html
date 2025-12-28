@@ -1,0 +1,56 @@
+<h1>Crear Nueva Tarea</h1>
+<form method="post" action="{% url 'create_tarea' %}">
+    {% csrf_token %}
+    <label for="titulo">Título:</label>
+    <input type="text" id="titulo" name="titulo" required>
+
+    <label for="descripcion">Descripción:</label>
+    <textarea id="descripcion" name="descripcion" required></textarea>
+
+    <label for="fecha_vencimiento">Fecha de vencimiento:</label>
+    <input type="date" id="fecha_vencimiento" name="fecha_vencimiento" required>
+
+    <label for="grupal">Tarea grupal:</label>
+    <input type="checkbox" id="grupal" name="grupal">
+
+    <div>
+        <p>Asignar a usuario(s):</p>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Correo</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>
+                        <input type="radio" name="assigned_users" value="{{ user.id }}" class="user-input">
+                    </td>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <button type="submit">Crear Tarea</button>
+</form>
+
+<script>
+    // Esta sección se debería sacar a archivos externos
+
+    const grupalCheckbox = document.getElementById('grupal');
+    const userInputs = document.querySelectorAll('.user-input');
+
+    grupalCheckbox.addEventListener('change', function() {
+        userInputs.forEach(input => {
+            input.type = this.checked ? 'checkbox' : 'radio';
+            input.checked = false; // Desmarcar todos cuando se cambia el tipo
+        });
+    });
+</script>
