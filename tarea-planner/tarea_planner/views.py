@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.hashers import make_password
 from django.views import View
 from .models import User
@@ -23,7 +24,6 @@ class RegisterView(View):
 
         try:
             user = User.objects.create_user(
-                username=email,
                 email=email,
                 password=make_password(password),
                 first_name=first_name,
@@ -37,12 +37,14 @@ class RegisterView(View):
             messages.error(request, f"Error al registrar el usuario: {str(e)}")
             return render(request, "register/register.html")
         
-class LoginView(View):
 
-    def get(self, request):
-        return render(request, "login/login.html")
 
 class HomeView(View):
 
     def get(self, request):
         return render(request, "home/home.html")
+
+class TareasView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        return render(request, "tareas/tareas.html")

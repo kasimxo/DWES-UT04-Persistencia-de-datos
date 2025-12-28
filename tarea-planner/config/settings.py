@@ -45,6 +45,9 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'tarea_planner.User'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/tareas/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -113,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-es'
 
 TIME_ZONE = 'UTC'
 
