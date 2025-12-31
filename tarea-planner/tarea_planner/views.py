@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import get_user_model
 from django.views import View
+from django.views.generic.detail import DetailView
 from .models import User
 
 User = get_user_model()
@@ -75,3 +76,15 @@ class CreacionTareasView(LoginRequiredMixin, View):
         messages.success(request, "Tarea creada con éxito.")
         """
         return redirect("tareas")
+
+class ListadoUsuariosView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        users = User.objects.all()
+        return render(request, "usuarios/listado_usuarios.html", {"users": users})
+    
+class PerfilUsuarioView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = "usuarios/perfil_usuario.html"
+    context_object_name = "usuario"
+    pk_url_kwarg = "user_id"

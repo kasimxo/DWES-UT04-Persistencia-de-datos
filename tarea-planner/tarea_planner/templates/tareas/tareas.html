@@ -1,5 +1,7 @@
 <h1>Tareas</h1>
 
+<a href="{% url 'usuario' user.id %}">Perfil</a>
+
 <a href="{% url 'create_tarea' %}">+ Crear nueva tarea</a>
 
 <form method="post" action="{% url 'logout' %}">
