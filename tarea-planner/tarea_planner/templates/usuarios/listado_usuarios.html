@@ -1,0 +1,19 @@
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Correo</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
