@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth import get_user_model
 from django.views import View
 from django.views.generic.detail import DetailView
-from .models import User
+from .models import User, Task
 
 User = get_user_model()
 
@@ -41,7 +41,6 @@ class RegisterView(View):
         except Exception as e:
             messages.error(request, f"Error al registrar el usuario: {str(e)}")
             return render(request, "register/register.html")
-        
 
 
 class HomeView(View):
@@ -64,17 +63,33 @@ class CreacionTareasView(LoginRequiredMixin, View):
             {"users": users})
 
     def post(self, request):
-        """
+
         titulo = request.POST.get("titulo")
         descripcion = request.POST.get("descripcion")
+        due_date = request.POST.get("fecha_vencimiento")
+        is_evaluable = request.POST.get("es_evaluable")
+        grupal = request.POST.get("grupal")
+        assigned_students_ids = request.POST.getlist("alumnos_asignados") # Esto no está implementado todavía
 
-        if not all([titulo, descripcion]):
-            messages.error(request, "Todos los campos son obligatorios.")
+        if not all([titulo, descripcion, due_date]):
+            messages.error(request, "Los campos título, descripción y fecha de vencimiento son obligatorios.")
             return render(request, "tareas/crear_tarea.html")
-
-        # Aquí se guardaría la tarea en la base de datos (lógica no implementada)
-        messages.success(request, "Tarea creada con éxito.")
-        """
+        
+        try:
+            tarea = Task(
+                titulo=titulo,
+                descripcion=descripcion,
+                due_date=due_date,
+                is_evaluable=bool(is_evaluable),
+                grupal=bool(grupal),
+                created_by=request.user,
+                assigned_to=User.objects.filter(id__in=assigned_students_ids)
+            )
+            tarea.save()
+            messages.success(request, "Tarea creada con éxito.")
+        except:
+            messages.error(request, "Error al crear la tarea.")
+        
         return redirect("tareas")
 
 class ListadoUsuariosView(LoginRequiredMixin, View):

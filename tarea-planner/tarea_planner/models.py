@@ -82,6 +82,11 @@ class Task(models.Model):
         default=models.UUIDField, 
         editable=False
         )
+    created_by = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE,
+        related_name='created_tasks'
+        )
     title = models.CharField(max_length=200)
     description = models.TextField()
     response = models.TextField(blank=True, null=True)
