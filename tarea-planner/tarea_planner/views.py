@@ -12,7 +12,7 @@ User = get_user_model()
 class RegisterView(View):
 
     def get(self, request):
-        return render(request, "register/register.html")
+        return render(request, "register/register.html", {"page_title": "Registrar Usuario"})
     
     def post(self, request):
 

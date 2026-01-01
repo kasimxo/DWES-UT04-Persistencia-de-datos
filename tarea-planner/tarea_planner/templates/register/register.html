@@ -1,5 +1,7 @@
-<h1>Crear usuario</h1>
-<hr />
+{% extends 'base.html' %}
+{% block title %} Registrar Usuario - Tarea Planner {% endblock %}
+
+{% block content %}
 
 <form id="register-form" method="POST" action="/register/" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px;">
     {% csrf_token %}
@@ -27,3 +29,5 @@
     {% endfor %}
 </ul> 
 {% endif %}
+
+{% endblock %}
