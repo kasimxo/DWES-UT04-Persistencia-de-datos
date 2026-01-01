@@ -46,13 +46,15 @@ class RegisterView(View):
 class HomeView(View):
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect("tareas")
         return render(request, "home/home.html")
 
 class TareasView(LoginRequiredMixin, View):
 
     def get(self, request):
-        return render(request, "tareas/tareas.html")
-    
+        return render(request, "tareas/tareas.html", {"page_title": "Tareas"})
+
 class CreacionTareasView(LoginRequiredMixin, View):
     
     def get(self, request):
@@ -60,7 +62,8 @@ class CreacionTareasView(LoginRequiredMixin, View):
         return render(
             request, 
             "tareas/crear_tarea.html", 
-            {"users": users})
+            {"users": users,
+             "page_title": "Crear Tarea"})
 
     def post(self, request):
 
@@ -96,10 +99,15 @@ class ListadoUsuariosView(LoginRequiredMixin, View):
 
     def get(self, request):
         users = User.objects.all()
-        return render(request, "usuarios/listado_usuarios.html", {"users": users})
+        return render(request, "usuarios/listado_usuarios.html", {"users": users, "page_title": "Listado de Usuarios"})
     
 class PerfilUsuarioView(LoginRequiredMixin, DetailView):
     model = User
     template_name = "usuarios/perfil_usuario.html"
     context_object_name = "usuario"
     pk_url_kwarg = "user_id"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = f"Perfil de {self.object.get_full_name()}"
+        return context

@@ -1,4 +1,8 @@
-<h1>Crear Nueva Tarea</h1>
+{% extends 'base.html' %}
+{% block title %} Crear Tarea - Tarea Planner {% endblock %}
+
+{% block content %}
+
 <form method="post" action="{% url 'create_tarea' %}">
     {% csrf_token %}
     <label for="titulo">Título:</label>
@@ -60,3 +64,5 @@
         });
     });
 </script>
+
+{% endblock %}

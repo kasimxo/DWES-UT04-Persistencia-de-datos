@@ -1,0 +1,24 @@
+{% load static %}
+
+<header style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f0f0f0;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <a href="{% url 'home' %}" >
+            <img src="{% static 'TP_Logo.png' %}" alt="Logo" style="height: 40px;">
+        </a>
+        <h1>{{ page_title }}</h1>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div style="display: flex; gap: 15px; align-items: center;">
+        <a href="{% url 'tareas' %}">Tareas</a>
+        <a href="{% url 'usuarios' %}">Usuarios</a>
+        <a href="{% url 'usuario' user.id %}">Perfil</a>
+                
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Cerrar sesión</button>
+        </form>
+    </div>
+    {% endif %}
+
+</header>
