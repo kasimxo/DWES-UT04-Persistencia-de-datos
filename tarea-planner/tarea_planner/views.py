@@ -48,7 +48,7 @@ class HomeView(View):
     def get(self, request):
         if request.user.is_authenticated:
             return redirect("tareas")
-        return render(request, "home/home.html")
+        return render(request, "home/home.html", {"page_title": "Tarea Planner"})
 
 class TareasView(LoginRequiredMixin, View):
 

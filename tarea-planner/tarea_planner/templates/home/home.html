@@ -1,4 +1,9 @@
-<h1>Tarea Planner</h1>
+{% extends 'base.html' %}
+{% block title %} Tarea Planner {% endblock %}
+
+{% block content %}
 
 <a href="{% url 'login' %}">Iniciar sesión</a>
 <a href="{% url 'register' %}">Registrarse</a>  
+
+{% endblock %}
