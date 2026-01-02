@@ -24,7 +24,7 @@ class RegisterView(View):
 
         if not all([first_name, last_name, email, password, role]):
             messages.error(request, "Todos los campos son obligatorios.")
-            return render(request, "register/register.html")
+            return redirect("register")
 
         try:
             user = User.objects.create_user(
@@ -40,7 +40,7 @@ class RegisterView(View):
             return redirect("login")
         except Exception as e:
             messages.error(request, f"Error al registrar el usuario: {str(e)}")
-            return render(request, "register/register.html")
+            return redirect("register")
 
 
 class HomeView(View):
@@ -66,7 +66,8 @@ class CreacionTareasView(LoginRequiredMixin, View):
              "page_title": "Crear Tarea"})
 
     def post(self, request):
-
+        print("Datos recibidos en el POST:")
+        print(request.POST)
         titulo = request.POST.get("titulo")
         descripcion = request.POST.get("descripcion")
         due_date = request.POST.get("fecha_vencimiento")
@@ -76,23 +77,25 @@ class CreacionTareasView(LoginRequiredMixin, View):
 
         if not all([titulo, descripcion, due_date]):
             messages.error(request, "Los campos título, descripción y fecha de vencimiento son obligatorios.")
-            return render(request, "tareas/crear_tarea.html")
+            return redirect("create_tarea")
         
         try:
             tarea = Task(
-                titulo=titulo,
-                descripcion=descripcion,
+                title=titulo,
+                description=descripcion,
                 due_date=due_date,
                 is_evaluable=bool(is_evaluable),
-                grupal=bool(grupal),
                 created_by=request.user,
-                assigned_to=User.objects.filter(id__in=assigned_students_ids)
             )
+            tarea.assigned_to.set(User.objects.filter(id__in=assigned_students_ids))
             tarea.save()
             messages.success(request, "Tarea creada con éxito.")
-        except:
-            messages.error(request, "Error al crear la tarea.")
-        
+            print(f"Tarea '{titulo}' creada con éxito.")
+        except Exception as e:
+            messages.error(request, f"Error al crear la tarea: {str(e)}")
+            print(f"Error al crear la tarea: {str(e)}")
+            return redirect("create_tarea")
+
         return redirect("tareas")
 
 class ListadoUsuariosView(LoginRequiredMixin, View):
