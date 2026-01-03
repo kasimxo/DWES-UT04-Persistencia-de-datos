@@ -1,56 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.hashers import make_password
-from django.contrib.auth import get_user_model
 from django.views import View
-from django.views.generic.detail import DetailView
-from .models import User, Task
 from datetime import datetime
 from django.utils import timezone
-
-User = get_user_model()
-
-class RegisterView(View):
-
-    def get(self, request):
-        return render(request, "register/register.html", {"page_title": "Registrar Usuario"})
-    
-    def post(self, request):
-
-        first_name = request.POST.get("first_name")
-        last_name = request.POST.get("last_name")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        role = request.POST.get("role")
-
-        if not all([first_name, last_name, email, password, role]):
-            messages.error(request, "Todos los campos son obligatorios.")
-            return redirect("register")
-
-        try:
-            user = User.objects.create_user(
-                email=email,
-                password=password,
-                first_name=first_name,
-                last_name=last_name,
-                role=role
-            )
-            user.save()
-            messages.success(request, "Usuario registrado con éxito.")
-            print(f"Usuario {email} {password} registrado con éxito.")
-            return redirect("login")
-        except Exception as e:
-            messages.error(request, f"Error al registrar el usuario: {str(e)}")
-            return redirect("register")
-
-
-class HomeView(View):
-
-    def get(self, request):
-        if request.user.is_authenticated:
-            return redirect("tareas")
-        return render(request, "home/home.html", {"page_title": "Tarea Planner"})
+from ..models import User, Task
 
 class TareasView(LoginRequiredMixin, View):
 
@@ -114,20 +68,3 @@ class CreacionTareasView(LoginRequiredMixin, View):
             return redirect("create_tarea")
 
         return redirect("tareas")
-
-class ListadoUsuariosView(LoginRequiredMixin, View):
-
-    def get(self, request):
-        usuarios = User.objects.all()
-        return render(request, "usuarios/listado_usuarios.html", {"usuarios": usuarios, "page_title": "Listado de Usuarios"})
-
-class PerfilUsuarioView(LoginRequiredMixin, DetailView):
-    model = User
-    template_name = "usuarios/perfil_usuario.html"
-    context_object_name = "usuario"
-    pk_url_kwarg = "user_id"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['page_title'] = f"Perfil de {self.object.get_full_name()}"
-        return context
