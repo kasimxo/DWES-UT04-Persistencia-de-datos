@@ -73,12 +73,21 @@ class CreacionTareasView(LoginRequiredMixin, View):
         due_date = request.POST.get("fecha_vencimiento")
         is_evaluable = request.POST.get("es_evaluable")
         grupal = request.POST.get("grupal")
-        assigned_students_ids = request.POST.getlist("alumnos_asignados") # Esto no está implementado todavía
+        assigned_students_ids = request.POST.getlist("usuarios_asignados") # Esto no está implementado todavía
 
         if not all([titulo, descripcion, due_date]):
             messages.error(request, "Los campos título, descripción y fecha de vencimiento son obligatorios.")
             return redirect("create_tarea")
         
+        """
+        El problema que estamos teniendo ahoramismo son los assigned students ids, que no son correctos
+        vamos a ver primero que nos llega y lo fixeamos
+
+        PREGUNTA:
+        Si es un estudiante el que crea la tarea, no debería tenerla asignada a sí mismo?
+        """
+        print(f"Assigned Students IDs: {assigned_students_ids}")
+        print(f"Users: {User.objects.filter(id__in=assigned_students_ids)}")
         try:
             tarea = Task(
                 title=titulo,
@@ -87,8 +96,8 @@ class CreacionTareasView(LoginRequiredMixin, View):
                 is_evaluable=bool(is_evaluable),
                 created_by=request.user,
             )
-            tarea.assigned_to.set(User.objects.filter(id__in=assigned_students_ids))
             tarea.save()
+            tarea.assigned_to.set(User.objects.filter(id__in=assigned_students_ids))
             messages.success(request, "Tarea creada con éxito.")
             print(f"Tarea '{titulo}' creada con éxito.")
         except Exception as e:

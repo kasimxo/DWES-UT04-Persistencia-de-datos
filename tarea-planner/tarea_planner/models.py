@@ -79,7 +79,7 @@ Una tarea finalizada/entregada no se podrá editar por el alumno, sólo se podr�
 class Task(models.Model):
     id = models.UUIDField(
         primary_key=True, 
-        default=models.UUIDField, 
+        default=uuid.uuid4, 
         editable=False
         )
     created_by = models.ForeignKey(
