@@ -6,6 +6,8 @@ from django.contrib.auth import get_user_model
 from django.views import View
 from django.views.generic.detail import DetailView
 from .models import User, Task
+from datetime import datetime
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -53,7 +55,7 @@ class HomeView(View):
 class TareasView(LoginRequiredMixin, View):
 
     def get(self, request):
-        return render(request, "tareas/tareas.html", {"page_title": "Tareas"})
+        return render(request, "tareas/tareas.html", {"tareas": Task.objects.all(), "page_title": "Tareas"})
 
 class CreacionTareasView(LoginRequiredMixin, View):
     
@@ -73,10 +75,17 @@ class CreacionTareasView(LoginRequiredMixin, View):
         due_date = request.POST.get("fecha_vencimiento")
         is_evaluable = request.POST.get("es_evaluable")
         grupal = request.POST.get("grupal")
-        assigned_students_ids = request.POST.getlist("usuarios_asignados") # Esto no está implementado todavía
+        assigned_students_ids = request.POST.getlist("usuarios_asignados")
 
-        if not all([titulo, descripcion, due_date]):
-            messages.error(request, "Los campos título, descripción y fecha de vencimiento son obligatorios.")
+        if not all([titulo, descripcion, due_date, assigned_students_ids]):
+            messages.error(request, "Los campos título, descripción, fecha de vencimiento y usuarios asignados son obligatorios.")
+            return redirect("create_tarea")
+        
+
+        fecha_vencimiento = datetime.strptime(due_date, "%Y-%m-%d").date()
+
+        if fecha_vencimiento < timezone.now().date():
+            messages.error(request, "La fecha de vencimiento no puede ser anterior a la fecha actual.")
             return redirect("create_tarea")
         
         """
@@ -86,8 +95,7 @@ class CreacionTareasView(LoginRequiredMixin, View):
         PREGUNTA:
         Si es un estudiante el que crea la tarea, no debería tenerla asignada a sí mismo?
         """
-        print(f"Assigned Students IDs: {assigned_students_ids}")
-        print(f"Users: {User.objects.filter(id__in=assigned_students_ids)}")
+        
         try:
             tarea = Task(
                 title=titulo,
@@ -110,9 +118,9 @@ class CreacionTareasView(LoginRequiredMixin, View):
 class ListadoUsuariosView(LoginRequiredMixin, View):
 
     def get(self, request):
-        users = User.objects.all()
-        return render(request, "usuarios/listado_usuarios.html", {"users": users, "page_title": "Listado de Usuarios"})
-    
+        usuarios = User.objects.all()
+        return render(request, "usuarios/listado_usuarios.html", {"usuarios": usuarios, "page_title": "Listado de Usuarios"})
+
 class PerfilUsuarioView(LoginRequiredMixin, DetailView):
     model = User
     template_name = "usuarios/perfil_usuario.html"

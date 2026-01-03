@@ -15,7 +15,7 @@
             background-color: #f4f4f4;
         }
         main {
-            padding: 15px 20px 15px 20px;
+            padding: 15px 25px 15px 25px;
         }
     </style>
 </head>
@@ -23,7 +23,12 @@
 
     {% include 'components/header.html' %}
 
-    <main>
+    <main style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    ">
         {% block content %}
         {% endblock %}
     </main>
