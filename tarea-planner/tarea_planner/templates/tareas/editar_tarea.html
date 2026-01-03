@@ -2,4 +2,25 @@
 {% block title %} Editar Tarea - Tarea Planner {% endblock %}
 
 {% block content %}
+
+<!-- 
+Formulario para editar la tarea
+Según el rol del usuario:
+    - Profesor: Puede editar la tarea (título, descripción, fecha entrega...)
+    - Estudiante: Solo puede "trabajar" en la tarea (entregar, añadir respuesta...)
+    - Estudiante & creador: Ve un botón que le permite hacer los campos como editables
+-->
+<div style="
+    display: flex; 
+    lex-direction: row;
+    gap: 20px;">
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+        <h2>{{ tarea.title }}</h2>
+        <p>{{ tarea.description }}</p>
+        <textarea>{% if tarea.answer is not None %} {{ tarea.answer }} {% endif %}</textarea>
+    </div>
+    <div>
+        <p>Fecha de Vencimiento: {{ tarea.due_date }}</p>
+    </div>
+</div>
 {% endblock %}

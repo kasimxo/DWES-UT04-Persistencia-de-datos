@@ -78,3 +78,16 @@ class EditarTareasView(LoginRequiredMixin, DetailView):
         context['page_title'] = f"Editar Tarea: {self.object.title}"
         context['users'] = User.objects.filter(role='student').exclude(id=self.request.user.id)
         return context
+    
+
+class DetalleTareasView(LoginRequiredMixin, DetailView):
+    model = Task
+    template_name = "tareas/detalle_tarea.html"
+    context_object_name = "tarea"
+    pk_url_kwarg = "tarea_id"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = f"Tarea: {self.object.title}"
+        context['users'] = User.objects.filter(role='student').exclude(id=self.request.user.id)
+        return context
