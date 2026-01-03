@@ -4,12 +4,18 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from datetime import datetime
 from django.utils import timezone
+from django.db.models import Q
 from ..models import User, Task
 
 class TareasView(LoginRequiredMixin, View):
 
     def get(self, request):
-        return render(request, "tareas/tareas.html", {"tareas": Task.objects.all(), "page_title": "Tareas"})
+        user = request.user
+        if user.role == 'student':
+            tareas = Task.objects.filter(Q(assigned_to=user) | Q(created_by=user)).distinct().order_by('-due_date')
+        else:
+            tareas = Task.objects.filter(created_by=user).order_by('-due_date')
+        return render(request, "tareas/tareas.html", {"tareas": tareas, "page_title": "Tareas"})
 
 class CreacionTareasView(LoginRequiredMixin, View):
     

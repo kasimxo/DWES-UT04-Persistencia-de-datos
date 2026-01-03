@@ -53,6 +53,7 @@ class Task(models.Model):
         null=True
         )
     finished_at = models.DateTimeField(blank=True, null=True)   
+    created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.title} - Assigned to: {', '.join([user.name for user in self.assigned_to.all()])}"
