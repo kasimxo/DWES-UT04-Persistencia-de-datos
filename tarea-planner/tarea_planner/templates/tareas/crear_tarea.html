@@ -5,50 +5,93 @@
 
 <form method="post" action="{% url 'create_tarea' %}">
     {% csrf_token %}
-    <label for="titulo">Título:</label>
-    <input type="text" id="titulo" name="titulo" required>
+    <div style="
+        display: flex;
+        flex-direction: row;
+        gap: 50px;">
+        <div style="
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        ">
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo" required>
 
-    <label for="descripcion">Descripción:</label>
-    <textarea id="descripcion" name="descripcion" required></textarea>
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" required></textarea>
 
-    <label for="fecha_vencimiento">Fecha de vencimiento:</label>
-    <input type="date" id="fecha_vencimiento" name="fecha_vencimiento" required>
+            <label for="fecha_vencimiento">Fecha de vencimiento:</label>
+            <input type="date" id="fecha_vencimiento" name="fecha_vencimiento" required>
 
-    <label for="es_evaluable">Evaluable:</label>
-    <select id="es_evaluable" name="es_evaluable">
-        <option value="false">No evaluable</option>
-        <option value="true">Evaluable</option>
-    </select>
+            <label for="es_evaluable">Evaluable:</label>
+            <select id="es_evaluable" name="es_evaluable">
+                <option value="false">No evaluable</option>
+                <option value="true">Evaluable</option>
+            </select>
+        </div>
+        <div>
+            <label for="grupal">Tarea grupal:</label>
+            <input type="checkbox" id="grupal" name="grupal">
 
-    <label for="grupal">Tarea grupal:</label>
-    <input type="checkbox" id="grupal" name="grupal">
-
-    <div>
-        <p>Asignar a usuario(s):</p>
-        <table>
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
-                    <th>Correo</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for user in users %}
-                <tr>
-                    <td>
-                        <input type="radio" name="usuarios_asignados" value="{{ user.id }}" class="user-input">
-                    </td>
-                    <td>{{ user.first_name }}</td>
-                    <td>{{ user.last_name }}</td>
-                    <td>{{ user.email }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+            <p>Asignar a usuario(s):</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>Correo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>
+                            <input type="radio" name="usuarios_asignados" value="{{ user.id }}" class="user-input">
+                        </td>
+                        <td>{{ user.first_name }}</td>
+                        <td>{{ user.last_name }}</td>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>    
+        </div>
     </div>
-    <button type="submit">Crear Tarea</button>
+    <div style="
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        width: 100%;
+        gap:25px
+        ">
+        <a href="{% url 'tareas' %}">
+            <button type="button" style="
+            padding: 10px 20px;
+            background-color: #8c8f92ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight:bold;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
+                Cancelar 
+            </button>
+        </a>
+        <button type="submit" style="
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight:bold;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
+            Crear 
+        </button>
+        
+    </div>
 </form>
 
 <script>
