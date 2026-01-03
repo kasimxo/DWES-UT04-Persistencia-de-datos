@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from datetime import datetime
+from django.views.generic.detail import DetailView
 from django.utils import timezone
 from django.db.models import Q
 from ..models import User, Task
@@ -40,21 +41,12 @@ class CreacionTareasView(LoginRequiredMixin, View):
         if not all([titulo, descripcion, due_date, assigned_students_ids]):
             messages.error(request, "Los campos título, descripción, fecha de vencimiento y usuarios asignados son obligatorios.")
             return redirect("create_tarea")
-        
 
         fecha_vencimiento = datetime.strptime(due_date, "%Y-%m-%d").date()
 
         if fecha_vencimiento < timezone.now().date():
             messages.error(request, "La fecha de vencimiento no puede ser anterior a la fecha actual.")
             return redirect("create_tarea")
-        
-        """
-        El problema que estamos teniendo ahoramismo son los assigned students ids, que no son correctos
-        vamos a ver primero que nos llega y lo fixeamos
-
-        PREGUNTA:
-        Si es un estudiante el que crea la tarea, no debería tenerla asignada a sí mismo?
-        """
         
         try:
             tarea = Task(
@@ -74,3 +66,15 @@ class CreacionTareasView(LoginRequiredMixin, View):
             return redirect("create_tarea")
 
         return redirect("tareas")
+
+class EditarTareasView(LoginRequiredMixin, DetailView):
+    model = Task
+    template_name = "tareas/editar_tarea.html"
+    context_object_name = "tarea"
+    pk_url_kwarg = "tarea_id"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = f"Editar Tarea: {self.object.title}"
+        context['users'] = User.objects.filter(role='student').exclude(id=self.request.user.id)
+        return context

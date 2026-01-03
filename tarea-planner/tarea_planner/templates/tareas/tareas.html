@@ -46,6 +46,24 @@
                 {% endfor %}
                 </div>
             </td>
+            <td>
+                <a href="{% url 'editar_tarea' tarea.id %}">
+                    <button style="
+                        padding: 5px 10px;
+                        background-color: #28a745;
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-weight:bold;
+                        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);">
+                        Editar
+                    </button>
+                </a>
+            </td>
+            <!-- Si el usuario es estudiante, añadir botón para "trabajar" en la tarea (edición) -->
+            <!-- Si el usuario es profesor, añadir botón para editar la tarea -->
+            <!-- Esto se puede hacer desde el "controlador" -->
         </tr>
     {% endfor %}
     </tbody>
