@@ -89,40 +89,11 @@ class EditarTareasView(LoginRequiredMixin, DetailView):
             messages.success(request, "Tarea guardada con éxito.")
             return redirect("tareas")
         elif action == "entregar":
-            return redirect("tareas")
-        return redirect("tareas")
-        tarea = self.get_object()
-        titulo = request.POST.get("titulo")
-        descripcion = request.POST.get("descripcion")
-        due_date = request.POST.get("fecha_vencimiento")
-        is_evaluable = request.POST.get("es_evaluable")
-        grupal = request.POST.get("grupal")
-        assigned_students_ids = request.POST.getlist("usuarios_asignados")
-
-        if not all([titulo, descripcion, due_date, assigned_students_ids]):
-            messages.error(request, "Los campos título, descripción, fecha de vencimiento y usuarios asignados son obligatorios.")
-            return redirect("edit_tarea", tarea_id=tarea.id)
-
-        fecha_vencimiento = datetime.strptime(due_date, "%Y-%m-%d").date()
-
-        if fecha_vencimiento < timezone.now().date():
-            messages.error(request, "La fecha de vencimiento no puede ser anterior a la fecha actual.")
-            return redirect("edit_tarea", tarea_id=tarea.id)
-        
-        try:
-            tarea.title = titulo
-            tarea.description = descripcion
-            tarea.due_date = due_date
-            tarea.is_evaluable = bool(is_evaluable)
-            tarea.assigned_to.set(User.objects.filter(id__in=assigned_students_ids))
+            tarea.finished_at = timezone.now()
             tarea.save()
-            messages.success(request, "Tarea actualizada con éxito.")
-        except Exception as e:
-            messages.error(request, f"Error al actualizar la tarea: {str(e)}")
-            return redirect("edit_tarea", tarea_id=tarea.id)
-
-        return redirect("tareas")
-    
+            messages.success(request, "Tarea entregada con éxito.")
+            return redirect("tareas")
+           
 
 class DetalleTareasView(LoginRequiredMixin, DetailView):
     model = Task
