@@ -25,7 +25,7 @@ Según el rol del usuario:
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <h2>{{ tarea.title }}</h2>
                 <p>{{ tarea.description }}</p>
-                <textarea>{% if tarea.answer is not None %} {{ tarea.answer }} {% endif %}</textarea>
+                <textarea id="respuesta" name="respuesta"  required>{% if tarea.answer is not None %} {{ tarea.answer }} {% endif %}</textarea>
             </div>
             <div>
                 <p>Fecha de Vencimiento: {{ tarea.due_date }}</p>

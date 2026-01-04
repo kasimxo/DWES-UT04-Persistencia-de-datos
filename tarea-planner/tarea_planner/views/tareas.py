@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
@@ -79,8 +79,17 @@ class EditarTareasView(LoginRequiredMixin, DetailView):
         context['users'] = User.objects.filter(role='student').exclude(id=self.request.user.id)
         return context
     
-    def post(self, request, *args, **kwargs):
-        print("test")
+    def post(self, request, tarea_id, *args, **kwargs):
+        tarea = self.get_object()
+        action = request.POST.get("action")
+        if action == "guardar":
+            respuesta = request.POST.get("respuesta")
+            tarea.answer = respuesta
+            tarea.save()
+            messages.success(request, "Tarea guardada con éxito.")
+            return redirect("tareas")
+        elif action == "entregar":
+            return redirect("tareas")
         return redirect("tareas")
         tarea = self.get_object()
         titulo = request.POST.get("titulo")
