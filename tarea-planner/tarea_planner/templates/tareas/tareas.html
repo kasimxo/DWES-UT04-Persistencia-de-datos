@@ -28,6 +28,8 @@
             <th>Fecha de Vencimiento</th>
             <th>Creada por</th>
             <th>Asignada a</th>
+            <th>Acciones</th>
+            <th>Evaluación</th>
         </tr>
     </thead>
     <tbody>
@@ -64,7 +66,7 @@
                     </a>
                 {% else %}
                     <!-- La tarea está finalizada, no se puede editar, solo ver -->
-                     <a href="{% url 'detalle_tarea' tarea.id %}">
+                    <a href="{% url 'detalle_tarea' tarea.id %}">
                         <button style="
                             padding: 5px 10px;
                             background-color: #28a745;
@@ -77,6 +79,25 @@
                             Ver
                         </button>
                     </a>
+                {% endif %}
+            </td>
+            <td>
+                {% if tarea.estado_evaluacion == 'Pendiente'%}
+                    <a href="{% url 'evaluar_tarea' tarea.id %}">
+                        <button style="
+                            padding: 5px 10px;
+                            background-color: #28a745;
+                            color: white;
+                            border: none;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            font-weight:bold;
+                            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);">
+                            Evaluar
+                        </button>
+                    </a>
+                {% else %}
+                    {{ tarea.estado_evaluacion}}
                 {% endif %}
             </td>
         </tr>

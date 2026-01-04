@@ -10,4 +10,23 @@ Según el rol del usuario:
     - Estudiante: solo puede ver
 -->
 
+<div>
+    <h2>{{ tarea.title }}</h2>
+    <p>{{ tarea.description }}</p>
+    <p>Fecha de Vencimiento: {{ tarea.due_date }}</p>
+    <p>Creada por: {{ tarea.created_by }}</p>
+    <div>
+        <h3>Asignada a:</h3>
+        <ul>
+        {% for usuario in tarea.assigned_to.all %}
+            <li>{{ usuario }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h3>Respuesta:</h3>
+        <p>{% if tarea.answer is not None %} {{ tarea.answer }} {% else %} No hay respuesta entregada. {% endif %}</p>
+    </div>
+</div>
+
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
@@ -53,7 +53,7 @@ class CreacionTareasView(LoginRequiredMixin, View):
                 title=titulo,
                 description=descripcion,
                 due_date=due_date,
-                is_evaluable=bool(is_evaluable),
+                is_evaluable=is_evaluable == 'true',
                 created_by=request.user,
             )
             tarea.save()
@@ -106,3 +106,26 @@ class DetalleTareasView(LoginRequiredMixin, DetailView):
         context['page_title'] = f"Tarea: {self.object.title}"
         context['users'] = User.objects.filter(role='student').exclude(id=self.request.user.id)
         return context
+
+class EvaluarTareasView(LoginRequiredMixin, DetailView):
+    model = Task
+    template_name = "tareas/evaluar_tarea.html"
+    context_object_name = "tarea"
+    pk_url_kwarg = "tarea_id"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = f"Evaluar tarea: {self.object.title}"
+        context['users'] = User.objects.filter(role='student').exclude(id=self.request.user.id)
+        return context
+    
+    def post(self, request, tarea_id, *args, **kwargs):
+        tarea = self.get_object()
+        action = request.POST.get("calificacion")
+        if action in ['apto', 'no_apto']:
+            tarea.evaluation = action
+            tarea.save()
+            messages.success(request, "Tarea evaluada con éxito.")
+        else:
+            messages.error(request, "Error al evaluar la tarea.")
+        return redirect("tareas")

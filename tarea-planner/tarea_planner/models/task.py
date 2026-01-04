@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from .user import User
+from django.utils import timezone
 
 """
 Para el modelo de tarea, necesito:
@@ -57,3 +58,20 @@ class Task(models.Model):
 
     def __str__(self):
         return f"{self.title} - Assigned to: {', '.join([ user.first_name + ' ' + user.last_name for user in self.assigned_to.all()])}"
+    
+    @property
+    def estado_evaluacion(self):
+        now = timezone.now()
+
+        if not self.is_evaluable:
+            return "No evaluable"
+        if self.evaluation:
+            return self.get_evaluation_display()
+        if self.due_date and self.due_date > now:
+            return "En progreso"
+        if self.due_date and self.due_date <= now and self.finished_at is None:
+            return "No entregada"
+        if self.finished_at and self.finished_at <= now:
+            return "Pendiente"
+
+        return "-"
