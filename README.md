@@ -8,6 +8,10 @@ Aplicación web desarrollada con Django para la gestión de tareas. Permite la c
 
 Estas acciones dependen del tipo de usuario, distinguiendo profesores y alumnos.
 
+## Arquitectura
+
+El proyecto se divide en dos aplicaciones, config y 
+
 ## Modelado de datos
 
 En este punto se definen los modelos utilizados en la aplicación, justificando las decisiones tomadas.
@@ -32,7 +36,29 @@ La clave principal de este modelo es también un campo UUID, por los mismos moti
 
 También tienen otra relación con la tabla de usuarios, ya que se guarda una referencia al usuario creador con la propiedad "created_by". Este campo, definido como FK, tiene el atributo de "on_delete=CASCADE", de modo que si se borra el usuario creador de la base de datos, se eliminan también sus tareas.
 
+## Base de datos
 
+La base de datos utilizada en este proyecto es PostgreSQL. A continuación se detallan las caracteristicas de la misma.
+
+### Psycopg2-binary
+
+La conexión con la base de datos se hace mediante el paquete psycopg2-binary. La utilización del paquete *-binary permite evitar la compilación o uso de librerías adicionales, ya que está listo para ser usado. Esta versión de la librería se recomienda para el desarrollo y el testing, pero su uso se desaconseja en un entorno de producción, en el que se debería usar el paquete original.
+
+Puedes leer más sobre las características y diferencias aquí https://pypi.org/project/psycopg2-binary/
+
+### Configuración PostgreSQL
+
+La configuración se detalla en el archivo settings.py, en el que se define la base de datos utilizada ("django.db.backends.postgresql") y los distintos parámetros para la conexión, como el nombre, usuario, contraseña o puerto. 
+
+Los valores de estas propiedades se guardan en un archivo .env para evitar la exposición de datos sensibles, utilizando el paquete dotenv y la función load_dotenv. También sería válida la utilización de variables del sistema o del entorno.
+
+## Migraciones
+
+
+
+## Gitignore
+
+El archivo .gitignore utilizado en este proyecto ha sido extraído de gitignore.io, configuradon específicamente para django.
 
 ## Créditos
 
