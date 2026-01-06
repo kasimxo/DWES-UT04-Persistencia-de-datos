@@ -3,6 +3,24 @@
 
 {% block content %}
 
+<style>
+    .tabla-tareas {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .tabla-tareas th, .tabla-tareas td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .tabla-tareas th {
+        background-color: #f2f2f2;
+    }
+</style>
+
 <a href="{% url 'create_tarea' %}" style="align-self: flex-end; margin-bottom: 20px;">
     <button style="
         padding: 10px 20px;
@@ -20,7 +38,7 @@
 <!-- Listado tareas -->
 <h2>Listado de tareas</h2>
 
-<table>
+<table class="tabla-tareas">
     <thead>
         <tr>
             <th>Título</th>

@@ -75,3 +75,7 @@ class Task(models.Model):
             return "Pendiente"
 
         return "-"
+    
+    @property
+    def grupal(self):
+        return self.assigned_to.count() > 1

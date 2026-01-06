@@ -36,6 +36,8 @@ La clave principal de este modelo es también un campo UUID, por los mismos moti
 
 También tienen otra relación con la tabla de usuarios, ya que se guarda una referencia al usuario creador con la propiedad "created_by". Este campo, definido como FK, tiene el atributo de "on_delete=CASCADE", de modo que si se borra el usuario creador de la base de datos, se eliminan también sus tareas.
 
+Un aspecto interesante de este modelo es la definición de propiedades adicionale mediante el uso de la etiqueta @property. Estas propiedades son inferidas a partir de otras, por ejemplo, una tarea es grupal si tiene más de un usuario asignado (la validación de esta propiedad se hace mediante la lógica de la aplicación en el momento de creación/edición). Estas propiedades son útiles en las vistas y formularios, pero no resulta necesario guardarlas en la base de datos.
+
 ## Base de datos
 
 La base de datos utilizada en este proyecto es PostgreSQL. A continuación se detallan las caracteristicas de la misma.
