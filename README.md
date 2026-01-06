@@ -60,7 +60,12 @@ Los valores de estas propiedades se guardan en un archivo .env para evitar la ex
 
 ## Gitignore
 
-El archivo .gitignore utilizado en este proyecto ha sido extraído de gitignore.io, configuradon específicamente para django.
+El archivo .gitignore utilizado en este proyecto ha sido extraído de gitignore.io, configurado específicamente para un proyecto django.
+
+## Posibles mejoras
+
+- Añadir validaciones de tipos de usuario y permisos al acceder a algunas vistas. 
+Actualmente la única comprobación que se hace al intentar acceder a una vista es si el usuario está logueado, por lo que resulta posible para un usuario de tipo alumno acceder a la edición o evaluación de una tarea a través de la url con el identificador de la tarea. Idealmente se crearía un sistema de validación que sea fácilmente reutilizable entre vistas para poder especificar el tipo de usuario que puede acceder a ella.
 
 ## Créditos
 

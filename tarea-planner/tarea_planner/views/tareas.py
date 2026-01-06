@@ -67,15 +67,16 @@ class CreacionTareasView(LoginRequiredMixin, View):
 
         return redirect("tareas")
 
-class EditarTareasView(LoginRequiredMixin, DetailView):
+
+class CompletarTareasView(LoginRequiredMixin, DetailView):
     model = Task
-    template_name = "tareas/editar_tarea.html"
+    template_name = "tareas/completar_tarea.html"
     context_object_name = "tarea"
     pk_url_kwarg = "tarea_id"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_title'] = f"Editar Tarea: {self.object.title}"
+        context['page_title'] = f"Completar Tarea: {self.object.title}"
         context['users'] = User.objects.filter(role='student').exclude(id=self.request.user.id)
         return context
     
@@ -95,37 +96,52 @@ class EditarTareasView(LoginRequiredMixin, DetailView):
             tarea.save()
             messages.success(request, "Tarea entregada con éxito.")
             return redirect("tareas")
-        elif action == "editar":
-            titulo = request.POST.get("titulo")
-            descripcion = request.POST.get("descripcion")
-            due_date = request.POST.get("fecha_vencimiento")
-            is_evaluable = request.POST.get("es_evaluable")
-            grupal = request.POST.get("grupal")
-            assigned_students_ids = request.POST.getlist("usuarios_asignados")
 
-            if not all([titulo, descripcion, due_date, assigned_students_ids]):
-                messages.error(request, "Los campos título, descripción, fecha de vencimiento y usuarios asignados son obligatorios.")
-                return redirect("editar_tarea", tarea_id=tarea.id)
+class EditarTareasView(LoginRequiredMixin, DetailView):
+    model = Task
+    template_name = "tareas/editar_tarea.html"
+    context_object_name = "tarea"
+    pk_url_kwarg = "tarea_id"
 
-            fecha_vencimiento = datetime.strptime(due_date, "%Y-%m-%d").date()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = f"Editar Tarea: {self.object.title}"
+        context['users'] = User.objects.filter(role='student').exclude(id=self.request.user.id)
+        return context
+    
+    def post(self, request, tarea_id, *args, **kwargs):
+        tarea = self.get_object()
+        action = request.POST.get("action")
+        titulo = request.POST.get("titulo")
+        descripcion = request.POST.get("descripcion")
+        due_date = request.POST.get("fecha_vencimiento")
+        is_evaluable = request.POST.get("es_evaluable")
+        grupal = request.POST.get("grupal")
+        assigned_students_ids = request.POST.getlist("usuarios_asignados")
 
-            if fecha_vencimiento < timezone.now().date():
-                messages.error(request, "La fecha de vencimiento no puede ser anterior a la fecha actual.")
-                return redirect("editar_tarea", tarea_id=tarea.id)
-            
-            try:
-                tarea.title = titulo
-                tarea.description = descripcion
-                tarea.due_date = due_date
-                tarea.is_evaluable = is_evaluable == 'true'
-                tarea.save()
-                tarea.assigned_to.set(User.objects.filter(id__in=assigned_students_ids))
-                messages.success(request, "Tarea editada con éxito.")
-            except Exception as e:
-                messages.error(request, f"Error al editar la tarea: {str(e)}")
-                return redirect("editar_tarea", tarea_id=tarea.id)
+        if not all([titulo, descripcion, due_date, assigned_students_ids]):
+            messages.error(request, "Los campos título, descripción, fecha de vencimiento y usuarios asignados son obligatorios.")
+            return redirect("editar_tarea", tarea_id=tarea.id)
 
-            return redirect("tareas")
+        fecha_vencimiento = datetime.strptime(due_date, "%Y-%m-%d").date()
+
+        if fecha_vencimiento < timezone.now().date():
+            messages.error(request, "La fecha de vencimiento no puede ser anterior a la fecha actual.")
+            return redirect("editar_tarea", tarea_id=tarea.id)
+        
+        try:
+            tarea.title = titulo
+            tarea.description = descripcion
+            tarea.due_date = due_date
+            tarea.is_evaluable = is_evaluable == 'true'
+            tarea.save()
+            tarea.assigned_to.set(User.objects.filter(id__in=assigned_students_ids))
+            messages.success(request, "Tarea editada con éxito.")
+        except Exception as e:
+            messages.error(request, f"Error al editar la tarea: {str(e)}")
+            return redirect("editar_tarea", tarea_id=tarea.id)
+
+        return redirect("tareas")
            
 
 class DetalleTareasView(LoginRequiredMixin, DetailView):

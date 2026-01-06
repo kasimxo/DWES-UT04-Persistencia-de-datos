@@ -27,7 +27,10 @@
             <label for="es_evaluable">Evaluable:</label>
             <select id="es_evaluable" name="es_evaluable">
                 <option value="false">No evaluable</option>
-                <option value="true">Evaluable</option>
+                <!-- Solo un profesor puede hacer tareas evaluables -->
+                {% if user.role == 'teacher' %}
+                    <option value="true">Evaluable</option>
+                {% endif %}
             </select>
         </div>
         <div>

@@ -69,8 +69,9 @@
             <td>
                 {% if tarea.finished_at is null %}
                     <!-- La tarea no está finalizada, se puede editar -->
-                    <a href="{% url 'editar_tarea' tarea.id %}">
-                        <button style="
+                    {% if user.role == 'student' %}
+                        <a href="{% url 'completar_tarea' tarea.id %}">
+                            <button style="
                             padding: 5px 10px;
                             background-color: #28a745;
                             color: white;
@@ -79,9 +80,24 @@
                             cursor: pointer;
                             font-weight:bold;
                             box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);">
-                            Editar
-                        </button>
-                    </a>
+                                Completar
+                            </button>
+                        </a>
+                    {% else %}                        
+                        <a href="{% url 'editar_tarea' tarea.id %}">
+                            <button style="
+                            padding: 5px 10px;
+                            background-color: #28a745;
+                            color: white;
+                            border: none;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            font-weight:bold;
+                            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);">
+                                Editar
+                            </button>
+                        </a>
+                    {% endif %}
                 {% else %}
                     <!-- La tarea está finalizada, no se puede editar, solo ver -->
                     <a href="{% url 'detalle_tarea' tarea.id %}">
