@@ -3,19 +3,33 @@
 ## Índice
 
 Introducción
+
 Requerimientos
+
 Instalación y uso
+
 Arquitectura
+
 Modelado de datos
+
     User
+
     Task
+
 Esquema ER
+
 Base de datos
+
     Psycopg2-binary
+
     Configuración PostgreSQL
+
 Migraciones
+
 Gitignore
+
 Posibles mejoras
+
 Créditos
 
 ## Introducción
@@ -107,7 +121,7 @@ El archivo .gitignore utilizado en este proyecto ha sido extraído de gitignore.
 
 - Añadir validaciones de tipos de usuario y permisos al acceder a algunas vistas. 
 Actualmente la única comprobación que se hace al intentar acceder a una vista es si el usuario está logueado, por lo que resulta posible para un usuario de tipo alumno acceder a la edición o evaluación de una tarea a través de la url con el identificador de la tarea. Idealmente se crearía un sistema de validación que sea fácilmente reutilizable entre vistas para poder especificar el tipo de usuario que puede acceder a ella.
-- Configurar un trabajo periódico (cron). Dado que las tareas tienen una fecha de entrega, podría resultar 
+- Configurar un trabajo periódico (cron). Dado que las tareas tienen una fecha de entrega, podría resultar útil configurar un trabajo autómatico que se ejecute en el servidor de forma periódica (una vez al día, una vez por hora) y marque aquellas tareas para las que haya llegado la fecha de entrega y no tengan respuesta como no entregadas. Para eso sería necesario añadir el estado de las tarea al modelo.
 
 ## Créditos
 
