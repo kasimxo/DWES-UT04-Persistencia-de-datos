@@ -9,6 +9,7 @@
 - [Modelado de datos](#modelado-de-datos)
     - [User](#user)
     - [Task](#task)
+- [Vistas](#vistas)
 - [Esquema ER](#esquema-er)
 - [Base de datos](#base-de-datos)
     - [Psycopg2-binary](#psycopg2-binary)
@@ -75,11 +76,11 @@ Un aspecto interesante de este modelo es la definición de propiedades adicional
 
 Se han desarrollado las siguientes vistas:
 
-| Archivo html | Archivo Python | Finalidad | Vista |
+| Archivo html | Archivo Python | Finalidad | Imagen |
 | - | - | - | - |
 | base.html | - | Base sobre la que se incrustan el resto de vistas. Permite reutilizar un mismo layout. | - |
-| header.html | - | Componente utilizado a modo de cabecera en todas las vistas. Unifica la navegación en la aplicación. | |
-| messages.html | - | Componente utilizado para mostrar los mensajes enviados desde el servidor al cliente. Los muestra como un toast en la esquina inferior izquierda que pueden ser eliminados por el usuario. | |
+| header.html | - | Componente utilizado a modo de cabecera en todas las vistas. Unifica la navegación en la aplicación. | ![cabecera](docs/cabecera.png) |
+| messages.html | - | Componente utilizado para mostrar los mensajes enviados desde el servidor al cliente. Los muestra como un toast en la esquina inferior derecha que pueden ser eliminados por el usuario. | ![mensajes](docs/mensajes.png) |
 | home.html | home.py | Landing page para los usuarios no autenticados. Serviría para mostrar información sobre la aplicación. Actualmente permite acceder al formulario de inicio de sesión y al de registro de usuairo. | ![home](docs/home.png) |
 | login.html | - | Formulario de inicio de sesión. Utiliza la lógica propia de django. | ![login](docs/login.png) |
 | register.html | register.py | Formulario de registro de usuarios. Permite crear usuarios con rol de profesor y alumno. | ![register](docs/register.png)|
