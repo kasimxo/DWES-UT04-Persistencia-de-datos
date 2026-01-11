@@ -2,21 +2,21 @@
 
 ## Índice
 
-[Introducción](#introducción)
-[Requerimientos](#requerimientos)
-[Instalación y uso](#instalación-y-uso)
-[Arquitectura](#arquitectura)
-[Modelado de datos](#modelado-de-datos)
-    [User](#user)
-    [Task](#task)
-[Esquema ER](#esquema-er)
-[Base de datos](#base-de-datos)
-    [Psycopg2-binary](#psycopg2-binary)
-    [Configuración PostgreSQL](#configuración-postgresql)
-[Migraciones](#migraciones)
-[Gitignore](#gitignore)
-[Posibles mejoras](#posibles-mejoras)
-[Créditos](#créditos)
+- [Introducción](#introducción)
+- [Requerimientos](#requerimientos)
+- [Instalación y uso](#instalación-y-uso)
+- [Arquitectura](#arquitectura)
+- [Modelado de datos](#modelado-de-datos)
+    - [User](#user)
+    - [Task](#task)
+- [Esquema ER](#esquema-er)
+- [Base de datos](#base-de-datos)
+    - [Psycopg2-binary](#psycopg2-binary)
+    - [Configuración PostgreSQL](#configuración-postgresql)
+- [Migraciones](#migraciones)
+- [Gitignore](#gitignore)
+- [Posibles mejoras](#posibles-mejoras)
+- [Créditos](#créditos)
 
 ## Introducción
 
