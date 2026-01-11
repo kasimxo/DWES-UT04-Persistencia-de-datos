@@ -71,6 +71,27 @@ También tienen otra relación con la tabla de usuarios, ya que se guarda una re
 
 Un aspecto interesante de este modelo es la definición de propiedades adicionale mediante el uso de la etiqueta @property. Estas propiedades son inferidas a partir de otras, por ejemplo, una tarea es grupal si tiene más de un usuario asignado (la validación de esta propiedad se hace mediante la lógica de la aplicación en el momento de creación/edición). Estas propiedades son útiles en las vistas y formularios, pero no resulta necesario guardarlas en la base de datos.
 
+## Vistas
+
+Se han desarrollado las siguientes vistas:
+
+| Archivo html | Archivo Python | Finalidad | Vista |
+| - | - | - | - |
+| base.html | - | Base sobre la que se incrustan el resto de vistas. Permite reutilizar un mismo layout. | - |
+| header.html | - | Componente utilizado a modo de cabecera en todas las vistas. Unifica la navegación en la aplicación. | |
+| messages.html | - | Componente utilizado para mostrar los mensajes enviados desde el servidor al cliente. Los muestra como un toast en la esquina inferior izquierda que pueden ser eliminados por el usuario. | |
+| home.html | home.py | Landing page para los usuarios no autenticados. Serviría para mostrar información sobre la aplicación. Actualmente permite acceder al formulario de inicio de sesión y al de registro de usuairo. | ![home](docs/home.png) |
+| login.html | - | Formulario de inicio de sesión. Utiliza la lógica propia de django. | ![login](docs/login.png) |
+| register.html | register.py | Formulario de registro de usuarios. Permite crear usuarios con rol de profesor y alumno. | ![register](docs/register.png)|
+| completar_tarea.html | tareas.py | Vista detalle de una tarea que permite a los usuarios de tipo alumno responder a la tarea, guardar el trabajo hecho y, en el momento que quieran, entregarla. | ![completar tarea](docs/completar_tarea.png) |
+| crear_tarea.html | tareas.py | Formulario de creación de tarea. Dependiendo de si el usuario es de tipo profesor o alumno podrá hacer tareas evaluables o no. | ![crear tarea](docs/crear_tarea.png) |
+| detalle_tarea.html |  tareas.py | Vista detalle de una tarea. Permite visualizar los datos de una tarea así como la respuesta dada por el alumno. | ![detalle tarea](docs/detalle_tarea.png)|
+| editar_tarea.html | tareas.py | Formulario de edición de una tarea. Permite (a un profesor o al usuario creador de la tarea) editar los datos de la misma. | ![editar tarea](docs/editar_tarea.png)|
+| evaluar_tarea.html | tareas.py | Formulario de evaluación de la tarea. Muestra el título, descripción y respuesta de una tarea y permite evaluar la misma. | ![evaluar tarea](docs/evaluar_tarea.png)|
+| tareas.html | tareas.py| Vista con el listado de todas las tareas. Incluye botones para navegar a la edición, visualización y evaluación de las tareas. | ![tareas](docs/tareas.png) |
+| listado_usuarios.html | usuarios.py | Vista que contiene el listado de todos los usuarios de la aplicación. | ![listado usuarios](docs/listado_usuarios.png)|
+| perfil_usuario.html | usuarios.py | Vista detalle de un usuario. Muestra sus datos principales, incluyendo el tipo de usuario. | ![perfil usuario](docs/perfil_usuario.png) |
+
 ## Esquema ER
 
 El siguiente esquema ER ha sido extraído de DBeaver y muestra la relación entre las distintas entidades de la base de datos de la aplicación.
@@ -108,6 +129,7 @@ El archivo .gitignore utilizado en este proyecto ha sido extraído de gitignore.
 - Añadir validaciones de tipos de usuario y permisos al acceder a algunas vistas. 
 Actualmente la única comprobación que se hace al intentar acceder a una vista es si el usuario está logueado, por lo que resulta posible para un usuario de tipo alumno acceder a la edición o evaluación de una tarea a través de la url con el identificador de la tarea. Idealmente se crearía un sistema de validación que sea fácilmente reutilizable entre vistas para poder especificar el tipo de usuario que puede acceder a ella.
 - Configurar un trabajo periódico (cron). Dado que las tareas tienen una fecha de entrega, podría resultar útil configurar un trabajo autómatico que se ejecute en el servidor de forma periódica (una vez al día, una vez por hora) y marque aquellas tareas para las que haya llegado la fecha de entrega y no tengan respuesta como no entregadas. Para eso sería necesario añadir el estado de las tarea al modelo.
+- Completar la landing page. Mejorar el estilo que tiene y añadir más información, como una descripción de la aplicación y un listado de ventajas de usarla.
 
 ## Créditos
 

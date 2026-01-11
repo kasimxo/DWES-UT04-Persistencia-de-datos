@@ -3,10 +3,26 @@
 
 {% block content %}
 
-<table>
+<style>
+    .tabla-usuarios {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .tabla-usuarios th, .tabla-usuarios td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .tabla-usuarios th {
+        background-color: #f2f2f2;
+    }
+</style>
+<table class="tabla-usuarios">
     <thead>
         <tr>
-            <th></th>
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Correo</th>

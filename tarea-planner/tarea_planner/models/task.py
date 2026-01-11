@@ -67,12 +67,12 @@ class Task(models.Model):
             return "No evaluable"
         if self.evaluation:
             return self.get_evaluation_display()
+        if self.finished_at and self.finished_at <= now:
+            return "Pendiente"
         if self.due_date and self.due_date > now:
             return "En progreso"
         if self.due_date and self.due_date <= now and self.finished_at is None:
             return "No entregada"
-        if self.finished_at and self.finished_at <= now:
-            return "Pendiente"
 
         return "-"
     
