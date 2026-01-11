@@ -2,15 +2,48 @@
 
 ## Índice
 
+Introducción
+Requerimientos
+Instalación y uso
+Arquitectura
+Modelado de datos
+    User
+    Task
+Esquema ER
+Base de datos
+    Psycopg2-binary
+    Configuración PostgreSQL
+Migraciones
+Gitignore
+Posibles mejoras
+Créditos
+
 ## Introducción
 
 Aplicación web desarrollada con Django para la gestión de tareas. Permite la creación de tareas, asignación a usuarios, trabajar en ellas, editarlas, entregarlas y evaluarlas.
 
 Estas acciones dependen del tipo de usuario, distinguiendo profesores y alumnos.
 
+## Requerimientos
+
+Para ejecutar la aplicación en el dispositivo local es necesario tener Python y PostgreSQL.
+
+## Instalación y uso
+
+Pasos para poder utilizar la aplicación:
+
+1. Clonar el repositorio: "git clone ..."
+2. Crear y activar un entorno virtual: "python -m venv venv && source venv/bin/activate"
+3. Instalar las dependencias de requirements.txt: "pip install -r requirements.txt"
+4. Configurar el archivo .env: "cp .env.example .env"
+5. Ejecutar las migraciones: "python manage.py migrate"
+7. Ejecutar el servidor: "python manage.py runserver"
+
 ## Arquitectura
 
-El proyecto se divide en dos aplicaciones, config y 
+El proyecto se divide en dos aplicaciones, config y tarea_planner. La aplicación config es la raíz, que funciona como la capa de configuración y arranque, mientras que el resto de la lógica de negocio, modelos, vistas y urls se han desarrollado dentro de tarea_planner. Esta división permite mantener el proyecto limpio y respetar la separación de responsabilidades.
+
+Dentro de la aplicación tarea_planner se ha optado por separa las vistas y modelos en archivos fraccionados, evitando el uso de archivos demasiado grandes con poca legibilidad. Estos archivos se agrupan dentro de sus correspondientes directorios (views/, models/) y funcionan como módulos de python, incluyendo un archivo __init__.py.  
 
 ## Modelado de datos
 
@@ -38,6 +71,12 @@ También tienen otra relación con la tabla de usuarios, ya que se guarda una re
 
 Un aspecto interesante de este modelo es la definición de propiedades adicionale mediante el uso de la etiqueta @property. Estas propiedades son inferidas a partir de otras, por ejemplo, una tarea es grupal si tiene más de un usuario asignado (la validación de esta propiedad se hace mediante la lógica de la aplicación en el momento de creación/edición). Estas propiedades son útiles en las vistas y formularios, pero no resulta necesario guardarlas en la base de datos.
 
+## Esquema ER
+
+El siguiente esquema ER ha sido extraído de DBeaver y muestra la relación entre las distintas entidades de la base de datos de la aplicación.
+
+![Esquema ER](<docs/MyOng - public - tarea_planner_task.png>)
+
 ## Base de datos
 
 La base de datos utilizada en este proyecto es PostgreSQL. A continuación se detallan las caracteristicas de la misma.
@@ -56,7 +95,9 @@ Los valores de estas propiedades se guardan en un archivo .env para evitar la ex
 
 ## Migraciones
 
+En un principio se crearon modelos básicos sobre los que se ejecutó una migración inicial. Durante el desarrollo del proyecto, conforme se han modificado estos modelos o sus relaciones, se han realizado posteriores migraciones para reflejar los cambios. 
 
+En el proyecto se incluyen las migraciones necesarias para ejecutar el proyecto sin erroes.
 
 ## Gitignore
 
@@ -66,6 +107,7 @@ El archivo .gitignore utilizado en este proyecto ha sido extraído de gitignore.
 
 - Añadir validaciones de tipos de usuario y permisos al acceder a algunas vistas. 
 Actualmente la única comprobación que se hace al intentar acceder a una vista es si el usuario está logueado, por lo que resulta posible para un usuario de tipo alumno acceder a la edición o evaluación de una tarea a través de la url con el identificador de la tarea. Idealmente se crearía un sistema de validación que sea fácilmente reutilizable entre vistas para poder especificar el tipo de usuario que puede acceder a ella.
+- Configurar un trabajo periódico (cron). Dado que las tareas tienen una fecha de entrega, podría resultar 
 
 ## Créditos
 
